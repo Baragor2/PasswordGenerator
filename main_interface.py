@@ -2,6 +2,7 @@ from enum import Enum
 
 
 def print_main_interface() -> None:
+    """Main menu output"""
     print("""Выберите желаемое действие:
     1.Сгенерировать пароль
     2.Настройки""")
@@ -12,9 +13,9 @@ class MainInterfaceReplyType(Enum):
     SETTINGS = 2
 
 
-def reply_main_interface() -> MainInterfaceReplyType:
+def get_reply_main_interface() -> MainInterfaceReplyType:
+    """Gets user input from the main menu"""
     try:
-        reply: MainInterfaceReplyType = MainInterfaceReplyType(int(input()))
-        return reply
+        return MainInterfaceReplyType(int(input()))
     except ValueError:
-        reply_main_interface()
+        get_reply_main_interface()
