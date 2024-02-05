@@ -1,6 +1,7 @@
-from enum import Enum
+from my_types import MainInterfaceReplyType
 from typing import List
 from generation import gen_password
+from settings_interface import print_settings_interface
 
 
 def print_main_interface() -> None:
@@ -9,11 +10,6 @@ def print_main_interface() -> None:
     1.Сгенерировать пароль
     2.Настройки""")
     gen_password_or_show_settings()
-
-
-class MainInterfaceReplyType(Enum):
-    GENERATE_PASSWORD = 1
-    SETTINGS = 2
 
 
 def get_reply_main_interface() -> MainInterfaceReplyType:
@@ -31,7 +27,7 @@ def gen_password_or_show_settings() -> None:
         passwords = gen_password()
         print_passwords(passwords)
     elif reply == MainInterfaceReplyType.SETTINGS:
-        pass
+        print_settings_interface()
 
 
 def print_passwords(passwords: List[str]) -> None:

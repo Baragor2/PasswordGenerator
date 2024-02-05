@@ -1,6 +1,8 @@
-PASSWORD_LENGTH = 16
-USE_UPPERCASE = True
-USE_LOWERCASE = True
-USE_DIGITS = True
-USE_SPECIAL = True
-PASSWORD_COUNT = 5
+from my_types import PositiveLimitedInt
+
+PASSWORD_LENGTH: PositiveLimitedInt = PositiveLimitedInt(16)
+USE_UPPERCASE: bool = True
+USE_LOWERCASE: bool = True
+USE_DIGITS: bool = True
+USE_SPECIAL: bool = True
+PASSWORD_COUNT: PositiveLimitedInt = PositiveLimitedInt(1)
