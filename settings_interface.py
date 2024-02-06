@@ -2,6 +2,7 @@ import config
 from my_types import SettingsInterfaceReplyType, PositiveLimitedInt
 import main_interface
 from typing import Callable
+import json
 
 
 def print_settings_interface() -> None:
@@ -26,6 +27,7 @@ def get_reply_settings_interface() -> SettingsInterfaceReplyType:
 
 
 def manage_config() -> None:
+    """User input processing"""
     reply: SettingsInterfaceReplyType = get_reply_settings_interface()
     match reply:
         case SettingsInterfaceReplyType.CHANGE_LENGTH:
@@ -48,14 +50,28 @@ def change_length() -> None:
     """Changes the password length in the config by user input"""
     print("Введите длину для паролей")
     try:
-        config.PASSWORD_LENGTH = check_length(int(input()), change_length)
+        length = check_length(int(input()), change_length)
+        refresh_the_config(length, "PASSWORD_LENGTH")
         print_settings_interface()
     except ValueError:
         change_length()
 
 
+def refresh_the_config(length: PositiveLimitedInt, config_parameter: str):
+    with open('config.json', 'r') as json_config:
+        config_data = json.load(json_config)
+
+    config_data[config_parameter] = length
+
+    with open('config.json', 'w') as json_config:
+        json.dump(config_data, json_config)
+
+    config.PASSWORD_LENGTH = length
+
+
 def check_length(num: int, func: Callable) -> PositiveLimitedInt:
-    if 0 < num < 512:
+    """Checking the validity of password length"""
+    if 0 < num < 513:
         return PositiveLimitedInt(num)
     else:
         func()

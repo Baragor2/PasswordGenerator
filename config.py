@@ -1,8 +1,13 @@
 from my_types import PositiveLimitedInt
+import json
 
-PASSWORD_LENGTH: PositiveLimitedInt = PositiveLimitedInt(16)
-USE_UPPERCASE: bool = True
-USE_LOWERCASE: bool = True
-USE_DIGITS: bool = True
-USE_SPECIAL: bool = True
-PASSWORD_COUNT: PositiveLimitedInt = PositiveLimitedInt(1)
+
+with open('config.json', 'r') as json_config:
+    config_data = json.load(json_config)
+
+PASSWORD_LENGTH = PositiveLimitedInt(config_data['PASSWORD_LENGTH'])
+USE_UPPERCASE = config_data['USE_UPPERCASE']
+USE_LOWERCASE = config_data['USE_LOWERCASE']
+USE_DIGITS = config_data['USE_DIGITS']
+USE_SPECIAL = config_data['USE_SPECIAL']
+PASSWORD_COUNT = PositiveLimitedInt(config_data['PASSWORD_COUNT'])
