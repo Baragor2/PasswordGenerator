@@ -17,7 +17,7 @@ def get_reply_main_interface() -> MainInterfaceReplyType:
     try:
         return MainInterfaceReplyType(int(input()))
     except ValueError:
-        get_reply_main_interface()
+        gen_password_or_show_settings()
 
 
 def gen_password_or_show_settings() -> None:

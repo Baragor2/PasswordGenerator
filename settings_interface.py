@@ -1,5 +1,6 @@
 import config
 from my_types import SettingsInterfaceReplyType, PositiveLimitedInt
+import main_interface
 from typing import Callable
 
 
@@ -21,7 +22,7 @@ def get_reply_settings_interface() -> SettingsInterfaceReplyType:
     try:
         return SettingsInterfaceReplyType(int(input()))
     except ValueError:
-        get_reply_settings_interface()
+        manage_config()
 
 
 def manage_config() -> None:
@@ -40,7 +41,7 @@ def manage_config() -> None:
         case SettingsInterfaceReplyType.CHANGE_SPECIALS:
             pass
         case SettingsInterfaceReplyType.EXIT:
-            pass
+            main_interface.print_main_interface()
 
 
 def change_length() -> None:
@@ -53,8 +54,8 @@ def change_length() -> None:
         change_length()
 
 
-def check_length(n: int, func: Callable) -> PositiveLimitedInt:
-    if 0 < n < 512:
-        return PositiveLimitedInt(n)
+def check_length(num: int, func: Callable) -> PositiveLimitedInt:
+    if 0 < num < 512:
+        return PositiveLimitedInt(num)
     else:
         func()
