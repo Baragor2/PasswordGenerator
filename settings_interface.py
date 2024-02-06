@@ -1,4 +1,5 @@
-import config
+# import config
+from config import MyConfig
 from my_types import SettingsInterfaceReplyType, PositiveLimitedInt
 import main_interface
 from typing import Callable
@@ -33,7 +34,7 @@ def manage_config() -> None:
         case SettingsInterfaceReplyType.CHANGE_LENGTH:
             change_length()
         case SettingsInterfaceReplyType.CHANGE_COUNT:
-            pass
+            change_count()
         case SettingsInterfaceReplyType.CHANGE_UPPER:
             pass
         case SettingsInterfaceReplyType.CHANGE_LOWER:
@@ -48,30 +49,48 @@ def manage_config() -> None:
 
 def change_length() -> None:
     """Changes the password length in the config by user input"""
-    print("Введите длину для паролей")
+    print("Введите длину для паролей или введите \"exit\" для выхода")
+    reply = input()
+    if reply == 'exit':
+        print_settings_interface()
     try:
-        length = check_length(int(input()), change_length)
+        length = check_positive_limited_int(int(reply), change_length)
         refresh_the_config(length, "PASSWORD_LENGTH")
         print_settings_interface()
     except ValueError:
         change_length()
 
 
-def refresh_the_config(length: PositiveLimitedInt, config_parameter: str):
-    with open('config.json', 'r') as json_config:
-        config_data = json.load(json_config)
+def change_count() -> None:
+    """Changes the password count in the config by user input"""
+    print("Введите количество одновременно генерируемых паролей или введите \"exit\" для выхода")
+    reply = input()
+    if reply == 'exit':
+        print_settings_interface()
+    try:
+        count = check_positive_limited_int(int(reply), change_length)
+        refresh_the_config(count, "PASSWORD_COUNT")
+        print_settings_interface()
+    except ValueError:
+        change_count()
 
-    config_data[config_parameter] = length
 
-    with open('config.json', 'w') as json_config:
-        json.dump(config_data, json_config)
-
-    config.PASSWORD_LENGTH = length
-
-
-def check_length(num: int, func: Callable) -> PositiveLimitedInt:
+def check_positive_limited_int(num: int, func: Callable) -> PositiveLimitedInt:
     """Checking the validity of password length"""
     if 0 < num < 513:
         return PositiveLimitedInt(num)
     else:
         func()
+
+
+def refresh_the_config(param: (PositiveLimitedInt, bool), config_parameter: str):
+    """Config parameter update"""
+    with open('config.json', 'r') as json_config:
+        config_data = json.load(json_config)
+
+    config_data[config_parameter] = param
+
+    with open('config.json', 'w') as json_config:
+        json.dump(config_data, json_config)
+
+    setattr(MyConfig, config_parameter, param)
