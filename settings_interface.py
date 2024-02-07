@@ -37,11 +37,11 @@ def manage_config() -> None:
         case SettingsInterfaceReplyType.CHANGE_UPPER:
             change_upper()
         case SettingsInterfaceReplyType.CHANGE_LOWER:
-            pass
+            change_lower()
         case SettingsInterfaceReplyType.CHANGE_DIGITS:
-            pass
+            change_digits()
         case SettingsInterfaceReplyType.CHANGE_SPECIALS:
-            pass
+            change_special()
         case SettingsInterfaceReplyType.EXIT:
             main_interface.print_main_interface()
 
@@ -71,13 +71,34 @@ def change_count() -> None:
 
 
 def change_upper() -> None:
-    """Enables/disables the use of capital letters"""
-    if MyConfig.USE_UPPERCASE:
-        print("Заглавные буквы отключены")
-        refresh_the_config(False, "USE_UPPERCASE")
+    """Enables/disables the use of uppercase letters"""
+    change_config_bool("Заглавные буквы", "USE_UPPERCASE")
+
+
+def change_lower() -> None:
+    """Enables/disables the use of lowercase letters"""
+    change_config_bool("Строчные буквы", "USE_LOWERCASE")
+
+
+def change_digits() -> None:
+    """Enables/disables the use of digits"""
+    change_config_bool("Цифры", "USE_DIGITS")
+
+
+def change_special() -> None:
+    """Enables/disables the use of special symbols"""
+    change_config_bool("Спецсимволы", "USE_SPECIAL")
+
+
+def change_config_bool(message: str, config_parameter: str) -> None:
+    """Enables/disables the config parameters"""
+    if getattr(MyConfig, config_parameter):
+        print(f'{message} отключены')
+        refresh_the_config(False, config_parameter)
+        print_settings_interface()
     else:
-        print("Заглавные буквы включены")
-        refresh_the_config(True, "USE_UPPERCASE")
+        print(f'{message} включены')
+        refresh_the_config(True, config_parameter)
         print_settings_interface()
 
 

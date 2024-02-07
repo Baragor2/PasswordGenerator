@@ -4,6 +4,7 @@ from typing import List
 from string import ascii_lowercase, ascii_uppercase, digits, punctuation as special_symbols
 
 
+
 def gen_password() -> List[str]:
     """Generates a list of passwords"""
     allowed_chars: str = get_allowed_chars()
@@ -28,4 +29,8 @@ def get_allowed_chars() -> str:
         allowed_chars += digits
     if MyConfig.USE_SPECIAL:
         allowed_chars += special_symbols
+    if not allowed_chars:
+        print("Все символы отключены")
+        from main_interface import print_main_interface
+        print_main_interface()
     return allowed_chars
