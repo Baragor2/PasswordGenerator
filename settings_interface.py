@@ -35,7 +35,7 @@ def manage_config() -> None:
         case SettingsInterfaceReplyType.CHANGE_COUNT:
             change_count()
         case SettingsInterfaceReplyType.CHANGE_UPPER:
-            pass
+            change_upper()
         case SettingsInterfaceReplyType.CHANGE_LOWER:
             pass
         case SettingsInterfaceReplyType.CHANGE_DIGITS:
@@ -70,6 +70,17 @@ def change_count() -> None:
     change_config("Введите количество одновременно генерируемых паролей", check_positive_limited_int, "PASSWORD_COUNT")
 
 
+def change_upper() -> None:
+    """Enables/disables the use of capital letters"""
+    if MyConfig.USE_UPPERCASE:
+        print("Заглавные буквы отключены")
+        refresh_the_config(False, "USE_UPPERCASE")
+    else:
+        print("Заглавные буквы включены")
+        refresh_the_config(True, "USE_UPPERCASE")
+        print_settings_interface()
+
+
 def check_positive_limited_int(num: int, func: Callable) -> PositiveLimitedInt:
     """Checking the validity of password length"""
     if 0 < num < 513:
@@ -78,14 +89,14 @@ def check_positive_limited_int(num: int, func: Callable) -> PositiveLimitedInt:
         func()
 
 
-def refresh_the_config(param: (PositiveLimitedInt, bool), config_parameter: str):
+def refresh_the_config(value: (PositiveLimitedInt, bool), config_parameter: str):
     """Config parameter update"""
     with open('config.json', 'r') as json_config:
         config_data = json.load(json_config)
 
-    config_data[config_parameter] = param
+    config_data[config_parameter] = value
 
     with open('config.json', 'w') as json_config:
         json.dump(config_data, json_config, indent=2)
 
-    setattr(MyConfig, config_parameter, param)
+    setattr(MyConfig, config_parameter, value)
