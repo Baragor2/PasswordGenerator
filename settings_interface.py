@@ -49,20 +49,6 @@ def manage_config() -> None:
             main_interface.print_main_interface()
 
 
-def change_config(message: str, check_func: Callable, config_parameter: str) -> None:
-    """Changes the config parameter by user input"""
-    print(message + " или введите \"exit\" для выхода")
-    reply = input()
-    if reply == 'exit':
-        print_settings_interface()
-    try:
-        param = check_func(int(reply), change_config)
-        refresh_the_config(param, config_parameter)
-        print_settings_interface()
-    except ValueError:
-        change_config(message, check_func, config_parameter)
-
-
 def change_length() -> None:
     """Changes the password length in the config by user input"""
     change_config("Введите длину для паролей", check_positive_limited_int, "PASSWORD_LENGTH")
@@ -93,6 +79,20 @@ def change_special() -> None:
     change_config_bool("Спецсимволы", "USE_SPECIAL")
 
 
+def change_config(message: str, check_func: Callable, config_parameter: str) -> None:
+    """Changes the config parameter by user input"""
+    print(message + " или введите \"exit\" для выхода")
+    reply = input()
+    if reply == 'exit':
+        print_settings_interface()
+    try:
+        param = check_func(int(reply), change_config, message, check_func, config_parameter)
+        refresh_the_config(param, config_parameter)
+        print_settings_interface()
+    except ValueError:
+        change_config(message, check_func, config_parameter)
+
+
 def change_config_bool(message: str, config_parameter: str) -> None:
     """Enables/disables the config parameters"""
     if getattr(MyConfig, config_parameter):
@@ -105,12 +105,14 @@ def change_config_bool(message: str, config_parameter: str) -> None:
         print_settings_interface()
 
 
-def check_positive_limited_int(num: int, func: Callable) -> PositiveLimitedInt:
+def check_positive_limited_int(num: int, func: Callable,
+                               message: str, check_func: Callable,
+                               config_parameter: str) -> PositiveLimitedInt:
     """Checking the validity of password length"""
     if 0 < num < 513:
         return PositiveLimitedInt(num)
     else:
-        func()
+        func(message, check_func, config_parameter)
 
 
 def refresh_the_config(value: (PositiveLimitedInt, bool), config_parameter: str) -> None:

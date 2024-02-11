@@ -1,5 +1,5 @@
 {
-  "PASSWORD_LENGTH": 100,
+  "PASSWORD_LENGTH": 2,
   "USE_UPPERCASE": true,
   "USE_LOWERCASE": true,
   "USE_DIGITS": true,
