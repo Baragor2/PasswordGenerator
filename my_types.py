@@ -9,7 +9,8 @@ class SettingsInterfaceReplyType(Enum):
     CHANGE_LOWER = 4
     CHANGE_DIGITS = 5
     CHANGE_SPECIALS = 6
-    EXIT = 7
+    SET_DEFAULT = 7
+    EXIT = 8
 
 
 class MainInterfaceReplyType(Enum):

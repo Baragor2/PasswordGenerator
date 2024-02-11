@@ -14,7 +14,8 @@ def print_settings_interface() -> None:
     4.Добавить/убрать прописные буквы
     5.Добавить/убрать цифры
     6.Добавить/убрать спецсимволы
-    7.Выйти из настроек''')
+    7.Установить настройки по умолчанию
+    8.Выйти из настроек''')
     manage_config()
 
 
@@ -42,6 +43,8 @@ def manage_config() -> None:
             change_digits()
         case SettingsInterfaceReplyType.CHANGE_SPECIALS:
             change_special()
+        case SettingsInterfaceReplyType.SET_DEFAULT:
+            set_default()
         case SettingsInterfaceReplyType.EXIT:
             main_interface.print_main_interface()
 
@@ -110,7 +113,7 @@ def check_positive_limited_int(num: int, func: Callable) -> PositiveLimitedInt:
         func()
 
 
-def refresh_the_config(value: (PositiveLimitedInt, bool), config_parameter: str):
+def refresh_the_config(value: (PositiveLimitedInt, bool), config_parameter: str) -> None:
     """Config parameter update"""
     with open('config.json', 'r') as json_config:
         config_data = json.load(json_config)
@@ -121,3 +124,19 @@ def refresh_the_config(value: (PositiveLimitedInt, bool), config_parameter: str)
         json.dump(config_data, json_config, indent=2)
 
     setattr(MyConfig, config_parameter, value)
+
+
+def set_default() -> None:
+    """Sets the default settings"""
+    default = {
+        'PASSWORD_LENGTH': 16,
+        'USE_UPPERCASE': True,
+        'USE_LOWERCASE': True,
+        'USE_DIGITS': True,
+        'USE_SPECIAL': True,
+        'PASSWORD_COUNT': 1,
+    }
+    for config_parameter, value in default.items():
+        refresh_the_config(value, config_parameter)
+
+    print_settings_interface()

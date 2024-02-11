@@ -1,8 +1,8 @@
 {
   "PASSWORD_LENGTH": 100,
   "USE_UPPERCASE": true,
-  "USE_LOWERCASE": false,
-  "USE_DIGITS": false,
-  "USE_SPECIAL": false,
-  "PASSWORD_COUNT": 5
+  "USE_LOWERCASE": true,
+  "USE_DIGITS": true,
+  "USE_SPECIAL": true,
+  "PASSWORD_COUNT": 1
 }
